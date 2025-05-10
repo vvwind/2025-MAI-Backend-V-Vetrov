@@ -5,9 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"rest-api/internal/model"
-	"rest-api/internal/repository"
 	"time"
+
+	"github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/model"
+	"github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/repository"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"

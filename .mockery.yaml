@@ -1,0 +1,6 @@
+template: testify
+packages:
+    github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/service:
+        interfaces:
+            ProductService:
+            UserService:

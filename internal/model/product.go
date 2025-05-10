@@ -45,5 +45,3 @@ type UpdateProductRequest struct {
 	Price              int64  `json:"price"`
 	Amount             int    `json:"amount"`
 }
-
-type A struct{}

@@ -140,14 +140,6 @@ func (c *MarketplaceController) LoginUser(w http.ResponseWriter, r *http.Request
 
 func (c *MarketplaceController) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 
-	var err error
-
-	defer func() {
-		if err != nil {
-			log.Println(err)
-		}
-	}()
-
 	ctx, cancel := context.WithTimeout(r.Context(), 50*time.Second)
 	defer cancel()
 
@@ -156,6 +148,11 @@ func (c *MarketplaceController) GetAllProducts(w http.ResponseWriter, r *http.Re
 		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	if products == nil {
+		products = []model.Product{}
+	}
+
 	utils.RespondWithJSON(w, http.StatusOK, products)
 }
 
@@ -193,9 +190,7 @@ func (c *MarketplaceController) GetProductByID(w http.ResponseWriter, r *http.Re
 }
 
 func (c *MarketplaceController) CreateProduct(w http.ResponseWriter, r *http.Request) {
-
 	var err error
-
 	defer func() {
 		if err != nil {
 			log.Println(err)
@@ -205,12 +200,14 @@ func (c *MarketplaceController) CreateProduct(w http.ResponseWriter, r *http.Req
 	ctx, cancel := context.WithTimeout(r.Context(), 50*time.Second)
 	defer cancel()
 
+	// Only decode ONCE at the start
 	var prReq model.CreateProductRequest
 	if err := json.NewDecoder(r.Body).Decode(&prReq); err != nil {
 		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 
+	// Validation checks
 	if prReq.Title == "" || prReq.ProductImage == "" || prReq.Price <= 0 || prReq.Amount <= 0 {
 		utils.RespondWithError(w, http.StatusBadRequest, "Wrong product data")
 		return
@@ -231,11 +228,6 @@ func (c *MarketplaceController) CreateProduct(w http.ResponseWriter, r *http.Req
 	curUser, err := c.usrSrvc.GetUserByEmail(ctx, userEmail)
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, "User not found by email")
-		return
-	}
-
-	if err := json.NewDecoder(r.Body).Decode(&prReq); err != nil {
-		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 
@@ -287,8 +279,14 @@ func (c *MarketplaceController) AddToCart(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	c.prSrvc.AddToCart(ctx, intId, curUser.ID)
+	err = c.prSrvc.AddToCart(ctx, intId, curUser.ID)
 
+	if err != nil {
+		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	utils.RespondWithJSON(w, http.StatusOK, "Added to cart")
 }
 
 func (c *MarketplaceController) BuyProduct(w http.ResponseWriter, r *http.Request) {
@@ -330,8 +328,14 @@ func (c *MarketplaceController) BuyProduct(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	c.prSrvc.BuyProduct(ctx, intId, curUser.ID)
+	err = c.prSrvc.BuyProduct(ctx, intId, curUser.ID)
 
+	if err != nil {
+		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	utils.RespondWithJSON(w, http.StatusOK, "Product purchased")
 }
 
 func (c *MarketplaceController) UpdateProduct(w http.ResponseWriter, r *http.Request) {
@@ -347,6 +351,12 @@ func (c *MarketplaceController) UpdateProduct(w http.ResponseWriter, r *http.Req
 	claims, ok := utils.GetUserClaimsFromContext(r)
 	if !ok {
 		utils.RespondWithError(w, http.StatusUnauthorized, "Invalid user claims")
+		return
+	}
+
+	userEmail, ok := claims["email"].(string)
+	if !ok {
+		utils.RespondWithError(w, http.StatusUnauthorized, "User ID not found in token")
 		return
 	}
 
@@ -367,9 +377,14 @@ func (c *MarketplaceController) UpdateProduct(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	userEmail, ok := claims["email"].(string)
-	if !ok {
-		utils.RespondWithError(w, http.StatusUnauthorized, "User ID not found in token")
+	if updatePrReq.Price < 0 || updatePrReq.Amount < 0 {
+		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+
+	if updatePrReq.ProductImage == "" && updatePrReq.ProductDescription == "" &&
+		updatePrReq.Title == "" && updatePrReq.Amount <= 0 && updatePrReq.Price <= 0 {
+		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 
@@ -384,10 +399,7 @@ func (c *MarketplaceController) UpdateProduct(w http.ResponseWriter, r *http.Req
 		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	if err != nil {
-		utils.RespondWithError(w, http.StatusNotFound, "Product not found")
-		return
-	}
+
 	utils.RespondWithJSON(w, http.StatusOK, resID)
 }
 

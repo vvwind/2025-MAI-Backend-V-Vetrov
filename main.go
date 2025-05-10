@@ -5,12 +5,13 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"rest-api/internal/config"
-	"rest-api/internal/controller"
-	"rest-api/internal/middleware"
-	"rest-api/internal/repository"
-	"rest-api/internal/service"
 	"time"
+
+	"github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/config"
+	"github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller"
+	"github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/middleware"
+	"github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/repository"
+	"github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/service"
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"

@@ -11,7 +11,6 @@ import (
 	"github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/repository"
 )
 
-//go:generate go run github.com/gojuno/minimock/v3/cmd/minimock
 type ProductService interface {
 	GetAllProducts(ctx context.Context) ([]model.Product, error)
 	GetProductByID(ctx context.Context, id int64) (*model.Product, error)

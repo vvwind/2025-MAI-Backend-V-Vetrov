@@ -3,8 +3,9 @@ package repository
 import (
 	"context"
 	"fmt"
-	"rest-api/internal/model"
 	"time"
+
+	"github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/model"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
