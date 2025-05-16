@@ -41,7 +41,7 @@ func TestCreateUser(t *testing.T) {
 			}`,
 			mockSetup: func() {
 				mockUserService.On("CreateUser", mock.Anything, mock.Anything, mock.Anything).
-					Return(int64(1), nil).Once()
+					Return(int64(14567), nil).Once()
 			},
 			expectedStatus: http.StatusCreated,
 		},
@@ -298,7 +298,7 @@ func TestUpdateProduct(t *testing.T) {
 	validUpdate := `{
         "title": "Updated Product",
         "product_description": "Updated Description",
-        "product_image": "updated.jpg",
+        "product_image": "updated_pic.jpg",
         "price": 200,
         "amount": 20
     }`
@@ -379,10 +379,8 @@ func TestUpdateProduct(t *testing.T) {
 			rr := httptest.NewRecorder()
 			controller.UpdateProduct(rr, req)
 
-			// Assertions
 			assert.Equal(t, tt.expectedStatus, rr.Code)
 
-			// Verify mocks only if we expect them to be called
 			if tt.expectedStatus != http.StatusUnauthorized && tt.expectedStatus != http.StatusBadRequest {
 				mockProductService.AssertExpectations(t)
 			}
@@ -527,7 +525,12 @@ func TestBuyProduct(t *testing.T) {
 	testDomain := faker.DomainName()
 
 	testEmail := fmt.Sprintf("%s@%s", testName, testDomain)
-	testCustomer := &model.User{ID: 1, Email: testEmail, Role: "customer", UserName: "ivan_ivanov"}
+	testCustomer := &model.User{
+		ID:       123,
+		Email:    testEmail,
+		Role:     "customer",
+		UserName: "ivan_ivanov",
+	}
 
 	tests := []struct {
 		name           string

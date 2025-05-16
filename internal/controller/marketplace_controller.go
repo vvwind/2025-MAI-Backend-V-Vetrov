@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -48,11 +49,13 @@ func (c *MarketplaceController) RegisterRoutes(router *mux.Router) {
 
 func (c *MarketplaceController) CreateUser(w http.ResponseWriter, r *http.Request) {
 
+	const op = "controller.CreateUser"
+
 	var err error
 
 	defer func() {
 		if err != nil {
-			log.Println(err)
+			log.Println(fmt.Errorf("%s: %w", op, err))
 		}
 	}()
 
@@ -103,11 +106,13 @@ func (c *MarketplaceController) CreateUser(w http.ResponseWriter, r *http.Reques
 
 func (c *MarketplaceController) LoginUser(w http.ResponseWriter, r *http.Request) {
 
+	const op = "controller.LoginUser"
+
 	var err error
 
 	defer func() {
 		if err != nil {
-			log.Println(err)
+			log.Println(fmt.Errorf("%s: %w", op, err))
 		}
 	}()
 
@@ -140,6 +145,16 @@ func (c *MarketplaceController) LoginUser(w http.ResponseWriter, r *http.Request
 
 func (c *MarketplaceController) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 
+	const op = "controller.GetAllProducts"
+
+	var err error
+
+	defer func() {
+		if err != nil {
+			log.Println(fmt.Errorf("%s: %w", op, err))
+		}
+	}()
+
 	ctx, cancel := context.WithTimeout(r.Context(), 50*time.Second)
 	defer cancel()
 
@@ -158,11 +173,13 @@ func (c *MarketplaceController) GetAllProducts(w http.ResponseWriter, r *http.Re
 
 func (c *MarketplaceController) GetProductByID(w http.ResponseWriter, r *http.Request) {
 
+	const op = "controller.GetProductByID"
+
 	var err error
 
 	defer func() {
 		if err != nil {
-			log.Println(err)
+			log.Println(fmt.Errorf("%s: %w", op, err))
 		}
 	}()
 
@@ -190,10 +207,14 @@ func (c *MarketplaceController) GetProductByID(w http.ResponseWriter, r *http.Re
 }
 
 func (c *MarketplaceController) CreateProduct(w http.ResponseWriter, r *http.Request) {
+
+	const op = "controller.CreateProduct"
+
 	var err error
+
 	defer func() {
 		if err != nil {
-			log.Println(err)
+			log.Println(fmt.Errorf("%s: %w", op, err))
 		}
 	}()
 
@@ -242,11 +263,13 @@ func (c *MarketplaceController) CreateProduct(w http.ResponseWriter, r *http.Req
 
 func (c *MarketplaceController) AddToCart(w http.ResponseWriter, r *http.Request) {
 
+	const op = "controller.AddToCart"
+
 	var err error
 
 	defer func() {
 		if err != nil {
-			log.Println(err)
+			log.Println(fmt.Errorf("%s: %w", op, err))
 		}
 	}()
 
@@ -291,11 +314,13 @@ func (c *MarketplaceController) AddToCart(w http.ResponseWriter, r *http.Request
 
 func (c *MarketplaceController) BuyProduct(w http.ResponseWriter, r *http.Request) {
 
+	const op = "controller.BuyProduct"
+
 	var err error
 
 	defer func() {
 		if err != nil {
-			log.Println(err)
+			log.Println(fmt.Errorf("%s: %w", op, err))
 		}
 	}()
 
@@ -340,11 +365,13 @@ func (c *MarketplaceController) BuyProduct(w http.ResponseWriter, r *http.Reques
 
 func (c *MarketplaceController) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 
+	const op = "controller.UpdateProduct"
+
 	var err error
 
 	defer func() {
 		if err != nil {
-			log.Println(err)
+			log.Println(fmt.Errorf("%s: %w", op, err))
 		}
 	}()
 
@@ -405,11 +432,13 @@ func (c *MarketplaceController) UpdateProduct(w http.ResponseWriter, r *http.Req
 
 func (c *MarketplaceController) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 
+	const op = "controller.DeleteProduct"
+
 	var err error
 
 	defer func() {
 		if err != nil {
-			log.Println(err)
+			log.Println(fmt.Errorf("%s: %w", op, err))
 		}
 	}()
 
