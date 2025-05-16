@@ -33,12 +33,15 @@ func TestCreateUser(t *testing.T) {
 	}{
 		{
 			name: "Success - create customer",
-			requestBody: `{
-				"name": "testuser",
-				"email": "test@example.com",
-				"password": "password123",
-				"role": "customer"
-			}`,
+			requestBody: func() string {
+				userReg := UserRegisterFactory{}.Build()
+				return fmt.Sprintf(`{
+					"name": "%s",
+					"email": "%s",
+					"password": "%s",
+					"role": "%s"
+				}`, userReg.UserName, userReg.Email, userReg.Password, userReg.Role)
+			}(),
 			mockSetup: func() {
 				mockUserService.On("CreateUser", mock.Anything, mock.Anything, mock.Anything).
 					Return(int64(14567), nil).Once()
@@ -110,10 +113,13 @@ func TestLoginUser(t *testing.T) {
 	}{
 		{
 			name: "Success - valid login",
-			requestBody: `{
-				"email": "test@example.com",
-				"password": "password123"
-			}`,
+			requestBody: func() string {
+				userLogin := UserLoginFactory{}.Build()
+				return fmt.Sprintf(`{
+					"email": "%s",
+					"password": "%s"
+				}`, userLogin.Email, userLogin.Password)
+			}(),
 			mockSetup: func() {
 				mockUserService.On("LoginUser", mock.Anything, mock.Anything).
 					Return("valid-token", nil).Once()
@@ -293,7 +299,7 @@ func TestUpdateProduct(t *testing.T) {
 	testDomain := faker.DomainName()
 
 	testEmail := fmt.Sprintf("%s@%s", testName, testDomain)
-	testSeller := &model.User{ID: 1, Email: testEmail, Role: "seller", UserName: "elon_musk"}
+	testSeller := UserFactory{Role: "seller"}.Build()
 
 	validUpdate := `{
         "title": "Updated Product",

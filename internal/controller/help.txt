@@ -1,0 +1,22 @@
+go test -coverprofile=coverage.out .
+
+go test -coverprofile=coverage.out marketplace_controller_test.go 
+
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:25:   NewMarketplaceController 100.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:32:   RegisterRoutes                   0.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:50:   CreateUser                       84.6%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:107:  LoginUser                        89.5%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:146:  GetAllProducts                   0.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:174:  GetProductByID                   100.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:209:  CreateProduct                    64.5%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:264:  AddToCart                        80.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:315:  BuyProduct                       80.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:366:  UpdateProduct                    75.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/marketplace_controller.go:433:  DeleteProduct                    100.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/factory.go:18:             Build   90.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/factory.go:49:             Build   100.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/factory.go:78:             Build   100.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/factory.go:105:            Build   0.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/factory.go:153:            Build   0.0%
+github.com/vvwind/2025-MAI-Backend-V-Vetrov/internal/controller/factory.go:189:            Build   0.0%
+total:                                                                                     (statements)                     65.4%
