@@ -1,0 +1,12 @@
+goose up
+
+goose up-to 20170506082420
+
+goose down
+
+goose status
+
+goose create fetch_user_data sql
+
+export GOOSE_DRIVER=postgres
+export GOOSE_DBSTRING="postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
